@@ -1,6 +1,14 @@
 import { useRef } from 'react';
+import { Link } from '@remix-run/react';
 import { useForm } from 'react-hook-form';
-import { Stack, TextInput, PasswordInput, Button } from '@mantine/core';
+import {
+  Stack,
+  TextInput,
+  PasswordInput,
+  Button,
+  Text,
+  Anchor,
+} from '@mantine/core';
 import { At, Lock, UserPlus } from 'tabler-icons-react';
 import type { FC } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -29,7 +37,7 @@ const SignInForm: FC<Props> = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submit)}>
+    <form onSubmit={handleSubmit(submit)} autoComplete='off'>
       <Stack>
         <TextInput
           label='Email'
@@ -64,6 +72,12 @@ const SignInForm: FC<Props> = () => {
         <Button type='submit' rightIcon={<UserPlus size={18} />} mt='1em'>
           Sign Up
         </Button>
+        <Text align='center'>
+          Already have an account?{' '}
+          <Anchor component={Link} to='/signin'>
+            Sign Up.
+          </Anchor>
+        </Text>
       </Stack>
     </form>
   );
