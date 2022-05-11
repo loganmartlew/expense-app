@@ -4,7 +4,7 @@ import type { FC } from 'react';
 
 interface Props {}
 
-const signin: FC<Props> = () => {
+const SignUpPage: FC<Props> = () => {
   return (
     <Container>
       <SignUpForm />
@@ -12,4 +12,4 @@ const signin: FC<Props> = () => {
   );
 };
 
-export default signin;
+export default SignUpPage;

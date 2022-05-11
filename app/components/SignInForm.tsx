@@ -1,5 +1,5 @@
+import { Form, Link } from '@remix-run/react';
 import { useForm } from 'react-hook-form';
-import { Link } from '@remix-run/react';
 import {
   Stack,
   TextInput,
@@ -31,7 +31,7 @@ const SignInForm: FC<Props> = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(submit)} autoComplete='off'>
+    <Form onSubmit={handleSubmit(submit)} autoComplete='off'>
       <Stack>
         <TextInput
           label='Email'
@@ -63,7 +63,7 @@ const SignInForm: FC<Props> = () => {
           </Anchor>
         </Text>
       </Stack>
-    </form>
+    </Form>
   );
 };
 
