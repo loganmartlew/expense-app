@@ -1,9 +1,9 @@
-import SignUpForm from '~/components/SignUpForm';
+import { Link } from '@remix-run/react';
 
 export default function Index() {
   return (
     <div>
-      <SignUpForm />
+      <Link to='/dashboard'>Get Started</Link>
     </div>
   );
 }

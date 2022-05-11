@@ -22,7 +22,6 @@ export const action: ActionFunction = async ({ request, context }) => {
     throwOnError: true,
     context,
   });
-  console.log(res);
   return res;
 };
 
@@ -41,9 +40,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 interface Props {}
 
-const SignInPage: FC<Props> = () => {
-  const loaderData = useLoaderData();
-  console.log(loaderData);
+const LoginPage: FC<Props> = () => {
+  const loaderData = useLoaderData<{ error?: { message: string } }>();
 
   return (
     <Container>
@@ -83,4 +81,4 @@ const SignInPage: FC<Props> = () => {
   );
 };
 
-export default SignInPage;
+export default LoginPage;

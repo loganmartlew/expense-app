@@ -40,7 +40,7 @@ authenticator.use(
       return await Promise.resolve({ ...user });
     } else {
       // if problem with user throw error AuthorizationError
-      throw new AuthorizationError('Bad Credentials');
+      throw new AuthorizationError('The email or password was incorrect');
     }
   })
 );
