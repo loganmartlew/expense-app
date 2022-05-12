@@ -24,7 +24,8 @@
     "react-hook-form": "^7.31.1",
     "remix-auth": "^3.2.1",
     "remix-auth-form": "^1.1.2",
-    "tabler-icons-react": "^1.48.0"
+    "tabler-icons-react": "^1.48.0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.4.3",

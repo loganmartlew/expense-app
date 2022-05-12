@@ -3,6 +3,7 @@ import { comparePassword, hashPassword } from '~/utils/hash.server';
 import type UserDTO from '~/types/UserDTO';
 import type { User } from '@prisma/client';
 import type UserPublic from '~/types/UserPublic';
+import { userDtoSchema } from '~/validation/user';
 
 export default class UserService {
   static sanitizeUser(user: User): UserPublic {
@@ -17,14 +18,14 @@ export default class UserService {
   }
 
   static async addUser(userData: UserDTO): Promise<UserPublic> {
-    // validate user
+    const validUserData: UserDTO = await userDtoSchema.validate(userData);
 
-    const password = await hashPassword(userData.rawPassword);
+    const password = await hashPassword(validUserData.rawPassword);
 
     const newUserData = {
-      fname: userData.fname,
-      lname: userData.lname,
-      email: userData.email,
+      fname: validUserData.fname,
+      lname: validUserData.lname,
+      email: validUserData.email,
       password,
     };
 
