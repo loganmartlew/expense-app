@@ -1,13 +1,25 @@
 import { db } from '~/utils/db.server';
+import { comparePassword, hashPassword } from '~/utils/hash.server';
 import type UserDTO from '~/types/UserDTO';
 import type { User } from '@prisma/client';
+import type UserPublic from '~/types/UserPublic';
 
 export default class UserService {
-  static async addUser(userData: UserDTO): Promise<User> {
+  static sanitizeUser(user: User): UserPublic {
+    const safeUser: UserPublic = {
+      id: user.id,
+      fname: user.fname,
+      lname: user.lname,
+      email: user.email,
+    };
+
+    return safeUser;
+  }
+
+  static async addUser(userData: UserDTO): Promise<UserPublic> {
     // validate user
 
-    // hash password
-    const password = userData.rawPassword;
+    const password = await hashPassword(userData.rawPassword);
 
     const newUserData = {
       fname: userData.fname,
@@ -20,20 +32,19 @@ export default class UserService {
       data: newUserData,
     });
 
-    return user;
+    return this.sanitizeUser(user);
   }
 
   static async matchCredentials(
     email: string,
     password: string
-  ): Promise<User | false> {
+  ): Promise<UserPublic | false> {
     const user = await db.user.findUnique({ where: { email } });
     if (!user) return false;
 
-    // hash password
-    const hashedPassword = password;
-    if (hashedPassword !== password) return false;
+    const match = await comparePassword(password, user.password);
+    if (!match) return false;
 
-    return user;
+    return this.sanitizeUser(user);
   }
 }

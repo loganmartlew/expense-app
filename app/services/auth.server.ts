@@ -1,15 +1,18 @@
 import { Authenticator, AuthorizationError } from 'remix-auth';
 import { FormStrategy } from 'remix-auth-form';
 import { sessionStorage } from '~/services/session.server';
-import type { User } from '@prisma/client';
 import UserService from './UserService.server';
+import type UserPublic from '~/types/UserPublic';
 
 // Create an instance of the authenticator, pass a Type, User,  with what
 // strategies will return and will store in the session
-const authenticator = new Authenticator<User | Error | null>(sessionStorage, {
-  sessionKey: 'sessionKey', // keep in sync
-  sessionErrorKey: 'sessionErrorKey', // keep in sync
-});
+const authenticator = new Authenticator<UserPublic | Error | null>(
+  sessionStorage,
+  {
+    sessionKey: 'sessionKey', // keep in sync
+    sessionErrorKey: 'sessionErrorKey', // keep in sync
+  }
+);
 
 authenticator.use(
   new FormStrategy(async ({ form }) => {
