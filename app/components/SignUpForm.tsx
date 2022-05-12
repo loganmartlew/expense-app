@@ -1,6 +1,4 @@
-import { useRef } from 'react';
-import { Link } from '@remix-run/react';
-import { useForm } from 'react-hook-form';
+import { Form, Link } from '@remix-run/react';
 import {
   Stack,
   TextInput,
@@ -9,78 +7,71 @@ import {
   Text,
   Anchor,
 } from '@mantine/core';
-import { At, Lock, UserPlus } from 'tabler-icons-react';
+import { Id, At, Lock, Login } from 'tabler-icons-react';
 import type { FC } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
+import type FormError from '~/types/FormError';
 
-interface FormData {
-  email: string;
-  password: string;
-  passwordConfirm: string;
+interface Props {
+  loaderData: FormError;
+  actionData: FormError;
 }
 
-interface Props {}
-
-const SignInForm: FC<Props> = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<FormData>();
-
-  const password = useRef({});
-  password.current = watch('password', '');
-
-  const submit: SubmitHandler<FormData> = data => {
-    console.log(data);
-  };
-
+const SignUpForm: FC<Props> = ({ loaderData, actionData }) => {
   return (
-    <form onSubmit={handleSubmit(submit)} autoComplete='off'>
+    <Form method='post' autoComplete='off'>
       <Stack>
         <TextInput
+          name='fname'
+          label='First Name'
+          placeholder='Your First Name'
+          icon={<Id size={16} />}
+          required
+        />
+        <TextInput
+          name='lname'
+          label='Last Name'
+          placeholder='Your Last Name'
+          icon={<Id size={16} />}
+          required
+        />
+        <TextInput
+          name='email'
           label='Email'
           placeholder='Your Email'
           icon={<At size={16} />}
           required
-          {...register('email', {
-            required: { value: true, message: 'Email is required' },
-          })}
-          error={errors.email?.message}
         />
         <PasswordInput
+          name='password'
           label='Password'
           placeholder='Your Password'
           icon={<Lock size={16} />}
           required
-          {...register('password', {
-            required: { value: true, message: 'Password is required' },
-          })}
-          error={errors.password?.message}
         />
         <PasswordInput
-          label='Confirm Password'
+          name='passwordConfirm'
+          label='Password'
           placeholder='Your Password'
           icon={<Lock size={16} />}
-          {...register('passwordConfirm', {
-            validate: value =>
-              value === password.current || 'Passwords do not match',
-          })}
-          error={errors.passwordConfirm?.message}
+          required
         />
-        <Button type='submit' rightIcon={<UserPlus size={18} />} mt='1em'>
+        {loaderData?.error || actionData?.error ? (
+          <Text size='sm' color='red'>
+            {actionData?.error?.message || loaderData?.error?.message}
+          </Text>
+        ) : null}
+        <Button type='submit' rightIcon={<Login size={18} />}>
           Sign Up
         </Button>
         <Text align='center'>
           Already have an account?{' '}
-          <Anchor component={Link} to='/signin'>
-            Sign Up.
+          <Anchor component={Link} to='/login'>
+            Log In.
           </Anchor>
         </Text>
       </Stack>
-    </form>
+    </Form>
   );
 };
 
-export default SignInForm;
+export default SignUpForm;

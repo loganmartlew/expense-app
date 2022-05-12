@@ -1,22 +1,15 @@
 import { json } from '@remix-run/node';
-import { Form, Link, useActionData, useLoaderData } from '@remix-run/react';
+import { useActionData, useLoaderData } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
 import { sessionStorage } from '~/services/session.server';
-import {
-  Container,
-  Stack,
-  TextInput,
-  PasswordInput,
-  Button,
-  Text,
-  Anchor,
-} from '@mantine/core';
-import { Id, At, Lock, Login } from 'tabler-icons-react';
+import { Container } from '@mantine/core';
 import { userDtoSchema } from '~/validation/user';
 import UserService from '~/services/UserService.server';
+import SignUpForm from '~/components/SignUpForm';
 import type { FC } from 'react';
 import type { ActionFunction, LoaderFunction } from '@remix-run/node';
 import type UserDTO from '~/types/UserDTO';
+import type FormError from '~/types/FormError';
 
 export const action: ActionFunction = async ({ request, context }) => {
   const copiedRequest = request.clone();
@@ -76,64 +69,12 @@ export const loader: LoaderFunction = async ({ request }) => {
 interface Props {}
 
 const SignUpPage: FC<Props> = () => {
-  const loaderData = useLoaderData<{ error?: { message: string } }>();
-  const actionData = useActionData<{ error?: { message: string } }>();
+  const loaderData = useLoaderData<FormError>();
+  const actionData = useActionData<FormError>() as FormError;
 
   return (
     <Container>
-      <Form method='post' autoComplete='off'>
-        <Stack>
-          <TextInput
-            name='fname'
-            label='First Name'
-            placeholder='Your First Name'
-            icon={<Id size={16} />}
-            required
-          />
-          <TextInput
-            name='lname'
-            label='Last Name'
-            placeholder='Your Last Name'
-            icon={<Id size={16} />}
-            required
-          />
-          <TextInput
-            name='email'
-            label='Email'
-            placeholder='Your Email'
-            icon={<At size={16} />}
-            required
-          />
-          <PasswordInput
-            name='password'
-            label='Password'
-            placeholder='Your Password'
-            icon={<Lock size={16} />}
-            required
-          />
-          <PasswordInput
-            name='passwordConfirm'
-            label='Password'
-            placeholder='Your Password'
-            icon={<Lock size={16} />}
-            required
-          />
-          {loaderData?.error || actionData?.error ? (
-            <Text size='sm' color='red'>
-              {actionData?.error?.message || loaderData?.error?.message}
-            </Text>
-          ) : null}
-          <Button type='submit' rightIcon={<Login size={18} />}>
-            Sign Up
-          </Button>
-          <Text align='center'>
-            Already have an account?{' '}
-            <Anchor component={Link} to='/login'>
-              Log In.
-            </Anchor>
-          </Text>
-        </Stack>
-      </Form>
+      <SignUpForm loaderData={loaderData} actionData={actionData} />
     </Container>
   );
 };

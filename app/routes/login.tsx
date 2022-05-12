@@ -1,24 +1,17 @@
 import { json } from '@remix-run/node';
-import { Form, Link, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
 import { sessionStorage } from '~/services/session.server';
-import {
-  Container,
-  Stack,
-  TextInput,
-  PasswordInput,
-  Button,
-  Text,
-  Anchor,
-} from '@mantine/core';
-import { At, Lock, Login } from 'tabler-icons-react';
+import { Container } from '@mantine/core';
+import LoginForm from '~/components/LoginForm';
 import type { FC } from 'react';
 import type { ActionFunction, LoaderFunction } from '@remix-run/node';
+import type FormError from '~/types/FormError';
 
 export const action: ActionFunction = async ({ request, context }) => {
   const res = await authenticator.authenticate('form', request, {
-    successRedirect: '/',
-    failureRedirect: '/signin',
+    successRedirect: '/dashboard',
+    failureRedirect: '/login',
     throwOnError: true,
     context,
   });
@@ -41,42 +34,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 interface Props {}
 
 const LoginPage: FC<Props> = () => {
-  const loaderData = useLoaderData<{ error?: { message: string } }>();
+  const loaderData = useLoaderData<FormError>();
 
   return (
     <Container>
-      <Form method='post' autoComplete='off'>
-        <Stack>
-          <TextInput
-            name='email'
-            label='Email'
-            placeholder='Your Email'
-            icon={<At size={16} />}
-            required
-          />
-          <PasswordInput
-            name='password'
-            label='Password'
-            placeholder='Your Password'
-            icon={<Lock size={16} />}
-            required
-          />
-          {loaderData?.error ? (
-            <Text size='sm' color='red'>
-              {loaderData?.error?.message}
-            </Text>
-          ) : null}
-          <Button type='submit' rightIcon={<Login size={18} />}>
-            Sign In
-          </Button>
-          <Text align='center'>
-            Don't have an account?{' '}
-            <Anchor component={Link} to='/signup'>
-              Sign Up.
-            </Anchor>
-          </Text>
-        </Stack>
-      </Form>
+      <LoginForm loaderData={loaderData} />
     </Container>
   );
 };
