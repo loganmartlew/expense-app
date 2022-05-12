@@ -15,9 +15,3 @@ export let sessionStorage = createCookieSessionStorage({
 
 // you can also export the methods individually for your own usage
 export let { getSession, commitSession, destroySession } = sessionStorage;
-
-// define the user model
-export type User = {
-  name: string;
-  token: string;
-};
