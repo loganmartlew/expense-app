@@ -1,5 +1,5 @@
 import { json } from '@remix-run/node';
-import { Form, Link, useLoaderData } from '@remix-run/react';
+import { Form, Link, useActionData, useLoaderData } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
 import { sessionStorage } from '~/services/session.server';
 import {
@@ -11,14 +11,49 @@ import {
   Text,
   Anchor,
 } from '@mantine/core';
-import { At, Lock, Login } from 'tabler-icons-react';
+import { Id, At, Lock, Login } from 'tabler-icons-react';
+import { userDtoSchema } from '~/validation/user';
+import UserService from '~/services/UserService.server';
 import type { FC } from 'react';
 import type { ActionFunction, LoaderFunction } from '@remix-run/node';
+import type UserDTO from '~/types/UserDTO';
 
 export const action: ActionFunction = async ({ request, context }) => {
-  const res = await authenticator.authenticate('form', request, {
-    successRedirect: '/',
-    failureRedirect: '/signin',
+  const copiedRequest = request.clone();
+
+  const body = await request.formData();
+
+  const userDto = {
+    fname: body.get('fname'),
+    lname: body.get('lname'),
+    email: body.get('email'),
+    rawPassword: body.get('password'),
+  };
+
+  try {
+    if (userDto.rawPassword !== body.get('passwordConfirm')) {
+      return json({ error: { message: 'Passwords do not match' } });
+    }
+
+    const validUserDto: UserDTO = await userDtoSchema.validate(userDto);
+    await UserService.addUser(validUserDto);
+  } catch (err: any) {
+    if (err.code === 'P2002') {
+      return json({
+        error: { message: 'Email is already linked to an account' },
+      });
+    }
+
+    if (err.errors) {
+      return json({ error: { message: err.errors[0] } });
+    }
+
+    return json({ error: { message: 'An error occurred' } });
+  }
+
+  const res = await authenticator.authenticate('form', copiedRequest, {
+    successRedirect: '/dashboard',
+    failureRedirect: '/login',
     throwOnError: true,
     context,
   });
@@ -42,11 +77,26 @@ interface Props {}
 
 const SignUpPage: FC<Props> = () => {
   const loaderData = useLoaderData<{ error?: { message: string } }>();
+  const actionData = useActionData<{ error?: { message: string } }>();
 
   return (
     <Container>
       <Form method='post' autoComplete='off'>
         <Stack>
+          <TextInput
+            name='fname'
+            label='First Name'
+            placeholder='Your First Name'
+            icon={<Id size={16} />}
+            required
+          />
+          <TextInput
+            name='lname'
+            label='Last Name'
+            placeholder='Your Last Name'
+            icon={<Id size={16} />}
+            required
+          />
           <TextInput
             name='email'
             label='Email'
@@ -62,24 +112,24 @@ const SignUpPage: FC<Props> = () => {
             required
           />
           <PasswordInput
-            name='password'
+            name='passwordConfirm'
             label='Password'
             placeholder='Your Password'
             icon={<Lock size={16} />}
             required
           />
-          {loaderData?.error ? (
+          {loaderData?.error || actionData?.error ? (
             <Text size='sm' color='red'>
-              {loaderData?.error?.message}
+              {actionData?.error?.message || loaderData?.error?.message}
             </Text>
           ) : null}
           <Button type='submit' rightIcon={<Login size={18} />}>
-            Sign In
+            Sign Up
           </Button>
           <Text align='center'>
-            Don't have an account?{' '}
-            <Anchor component={Link} to='/signup'>
-              Sign Up.
+            Already have an account?{' '}
+            <Anchor component={Link} to='/login'>
+              Log In.
             </Anchor>
           </Text>
         </Stack>

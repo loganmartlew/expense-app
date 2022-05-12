@@ -1,20 +1,16 @@
-import yup from 'yup';
+import { object, string } from 'yup';
 
-export const userDtoSchema = yup.object({
-  fname: yup
-    .string()
+export const userDtoSchema = object({
+  fname: string()
     .required('First name is required')
     .max(20, 'First name cannot be longer than 20 characters'),
-  lname: yup
-    .string()
+  lname: string()
     .required('Last name is required')
     .max(20, 'Last name cannot be longer than 20 characters'),
-  email: yup
-    .string()
+  email: string()
     .required('Email is required')
     .email('Email must be a valid email'),
-  rawPassword: yup
-    .string()
+  rawPassword: string()
     .required('Password is required')
     .min(9, 'Password must be at least 9 characters'),
 });
