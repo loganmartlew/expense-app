@@ -1,9 +1,9 @@
 import { db } from '~/utils/db.server';
 import { comparePassword, hashPassword } from '~/utils/hash.server';
+import { userDtoSchema } from '~/validation/user';
 import type UserDTO from '~/types/UserDTO';
 import type { User } from '@prisma/client';
 import type UserPublic from '~/types/UserPublic';
-import { userDtoSchema } from '~/validation/user';
 
 export default class UserService {
   static sanitizeUser(user: User): UserPublic {

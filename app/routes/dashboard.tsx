@@ -1,5 +1,7 @@
-import { Form } from '@remix-run/react';
+import { Link } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
+import { Container, Group, Title, Button } from '@mantine/core';
+import { Plus } from 'tabler-icons-react';
 import type { LoaderFunction } from '@remix-run/node';
 import type { FC } from 'react';
 
@@ -13,12 +15,14 @@ interface Props {}
 
 const dashboard: FC<Props> = () => {
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <Form method='post' action='/logout'>
-        <button type='submit'>Logout</button>
-      </Form>
-    </div>
+    <Container>
+      <Group>
+        <Title>Households</Title>
+        <Link to='/new-household'>
+          <Button leftIcon={<Plus size={18} />}>New Household</Button>
+        </Link>
+      </Group>
+    </Container>
   );
 };
 
