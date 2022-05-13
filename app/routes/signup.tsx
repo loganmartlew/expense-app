@@ -3,7 +3,7 @@ import { useActionData, useLoaderData } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
 import { sessionStorage } from '~/services/session.server';
 import { Container } from '@mantine/core';
-import { userDtoSchema } from '~/validation/user';
+import { validateUserDto } from '~/validation/user';
 import UserService from '~/services/UserService.server';
 import SignUpForm from '~/components/SignUpForm';
 import type { FC } from 'react';
@@ -28,7 +28,7 @@ export const action: ActionFunction = async ({ request, context }) => {
       return json({ error: { message: 'Passwords do not match' } });
     }
 
-    const validUserDto: UserDTO = await userDtoSchema.validate(userDto);
+    const validUserDto = await validateUserDto(userDto as UserDTO);
     await UserService.addUser(validUserDto);
   } catch (err: any) {
     if (err.code === 'P2002') {
