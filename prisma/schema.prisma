@@ -11,9 +11,68 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  fname     String
-  lname     String
-  email     String    @unique
-  password  String
+  id             String       @id @default(uuid())
+  fname          String
+  lname          String
+  email          String       @unique
+  password       String
+  households     Household[]
+  pendingInvites UserInvite[] @relation("invitee")
+  invitesSent    UserInvite[] @relation("inviter")
+}
+
+model Household {
+  id                String             @id @default(uuid())
+  name              String
+  users             User[]
+  activeInvites     UserInvite[]
+  recurringExpenses RecurringExpense[]
+  incomes           Income[]
+  budgets           Budget[]
+}
+
+model UserInvite {
+  invitee     User      @relation(name: "invitee", fields: [inviteeId], references: [id])
+  inviteeId   String
+  inviter     User      @relation(name: "inviter", fields: [inviterId], references: [id])
+  inviterId   String
+  household   Household @relation(fields: [householdId], references: [id])
+  householdId String
+
+  @@id([inviteeId, inviterId, householdId])
+}
+
+model RecurringExpense {
+  id          String    @id @default(uuid())
+  name        String
+  amount      Int
+  household   Household @relation(fields: [householdId], references: [id])
+  householdId String
+}
+
+model Income {
+  id          String    @id @default(uuid())
+  name        String
+  amount      Int
+  household   Household @relation(fields: [householdId], references: [id])
+  householdId String
+}
+
+model Budget {
+  id          String    @id @default(uuid())
+  name        String
+  amount      Int
+  expenses    Expense[]
+  household   Household @relation(fields: [householdId], references: [id])
+  householdId String
+}
+
+model Expense {
+  id            String  @id @default(uuid())
+  name          String
+  amount        Int
+  quality       Int
+  reimbursement Boolean
+  budget        Budget  @relation(fields: [budgetId], references: [id])
+  budgetId      String
 }
