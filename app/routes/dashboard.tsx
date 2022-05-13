@@ -21,6 +21,9 @@ const dashboard: FC<Props> = () => {
         <Link to='/new-household'>
           <Button leftIcon={<Plus size={18} />}>New Household</Button>
         </Link>
+        <Link to='/logout'>
+          <Button leftIcon={<Plus size={18} />}>logout</Button>
+        </Link>
       </Group>
     </Container>
   );

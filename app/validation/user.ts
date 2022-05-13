@@ -21,7 +21,7 @@ export const userDtoSchema = object({
 });
 
 export const validateUserDto = async (userDto: UserDTO) => {
-  const trimmedUser = {
+  const trimmedUser: UserDTO = {
     fname: userDto.fname.trim(),
     lname: userDto.lname.trim(),
     email: userDto.email.trim(),
