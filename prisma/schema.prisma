@@ -11,20 +11,23 @@ datasource db {
 }
 
 model User {
-  id             String       @id @default(uuid())
-  fname          String
-  lname          String
-  email          String       @unique
-  password       String
-  households     Household[]
-  pendingInvites UserInvite[] @relation("invitee")
-  invitesSent    UserInvite[] @relation("inviter")
+  id              String       @id @default(uuid())
+  fname           String
+  lname           String
+  email           String       @unique
+  password        String
+  households      Household[]  @relation("user")
+  ownedHouseholds Household[]  @relation("owner")
+  pendingInvites  UserInvite[] @relation("invitee")
+  invitesSent     UserInvite[] @relation("inviter")
 }
 
 model Household {
   id                String             @id @default(uuid())
   name              String
-  users             User[]
+  owner             User               @relation(name: "owner", fields: [ownerId], references: [id])
+  ownerId           String
+  users             User[]             @relation("user")
   activeInvites     UserInvite[]
   recurringExpenses RecurringExpense[]
   incomes           Income[]
