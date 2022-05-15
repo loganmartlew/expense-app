@@ -10,7 +10,7 @@ import type FormError from '~/types/FormError';
 
 export const action: ActionFunction = async ({ request, context }) => {
   const res = await authenticator.authenticate('form', request, {
-    successRedirect: '/dashboard',
+    successRedirect: '/app',
     failureRedirect: '/login',
     throwOnError: true,
     context,

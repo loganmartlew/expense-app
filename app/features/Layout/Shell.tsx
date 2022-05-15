@@ -16,10 +16,11 @@ const Shell: FC<Props> = ({ children }) => {
       fixed
       sx={{
         main: {
+          paddingRight: 0,
           background:
             theme.colorScheme === 'dark'
               ? theme.colors.dark[8]
-              : theme.colors.gray[0],
+              : theme.colors.gray[2],
         },
       }}
       header={<Header open={open} toggleOpen={() => setOpen(o => !o)} />}

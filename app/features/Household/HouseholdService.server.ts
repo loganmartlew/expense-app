@@ -34,7 +34,6 @@ export default class HouseholdService {
       where: { id: userId },
       include: { households: true },
     });
-    console.log(user);
     if (!user) return [];
 
     return user.households;
