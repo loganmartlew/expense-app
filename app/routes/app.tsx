@@ -5,7 +5,7 @@ import type { FC } from 'react';
 import type { LoaderFunction } from '@remix-run/node';
 
 export let loader: LoaderFunction = async ({ request }) => {
-  await authenticator.isAuthenticated(request, {
+  return await authenticator.isAuthenticated(request, {
     failureRedirect: '/login',
   });
 };
