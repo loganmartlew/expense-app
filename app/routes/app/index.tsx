@@ -9,6 +9,7 @@ import type { Household } from '@prisma/client';
 import type { LoaderFunction } from '@remix-run/node';
 import type { FC } from 'react';
 import NewHouseholdModal from '~/features/Household/NewHouseholdModal';
+import HouseholdHorizontalList from '~/features/Household/HouseholdHorizontalList';
 
 interface LoaderData {
   households: Household[];
@@ -54,7 +55,7 @@ const DashboardPage: FC<Props> = () => {
       {households.length < 1 ? (
         <p>No Households</p>
       ) : (
-        households.map(household => <p key={household.id}>{household.name}</p>)
+        <HouseholdHorizontalList households={households} />
       )}
     </Container>
   );
