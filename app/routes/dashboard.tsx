@@ -23,6 +23,7 @@ export let loader: LoaderFunction = async ({ request }) => {
   if (user instanceof Error) return user;
 
   const households = await HouseholdService.getHouseholdsOfUser(user.id);
+  console.log(households);
   const data: LoaderData = { households };
   return json(data);
 };

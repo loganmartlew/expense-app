@@ -7,7 +7,16 @@ export default class HouseholdService {
   static async addHousehold(householdData: HouseholdDTO): Promise<Household> {
     const validHouseholdData = await validateHouseholdDto(householdData);
 
-    const household = await db.household.create({ data: validHouseholdData });
+    const household = await db.household.create({
+      data: {
+        ...validHouseholdData,
+        users: {
+          connect: {
+            id: validHouseholdData.ownerId,
+          },
+        },
+      },
+    });
 
     return household;
   }
@@ -25,6 +34,7 @@ export default class HouseholdService {
       where: { id: userId },
       include: { households: true },
     });
+    console.log(user);
     if (!user) return [];
 
     return user.households;

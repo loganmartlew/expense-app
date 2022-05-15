@@ -11,7 +11,7 @@ interface Props {
 const NewHouseholdModal: FC<Props> = ({ open, onClose }) => {
   return (
     <Modal opened={open} onClose={onClose} title='New Household'>
-      <Form method='post' action=''>
+      <Form method='post' action='/newhousehold' onSubmit={onClose}>
         <Stack>
           <TextInput
             name='name'
