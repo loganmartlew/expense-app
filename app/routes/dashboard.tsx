@@ -4,11 +4,11 @@ import { Link, useLoaderData } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
 import { Container, Group, Title, Button } from '@mantine/core';
 import { Plus } from 'tabler-icons-react';
-import HouseholdService from '~/services/HouseholdService.server';
+import HouseholdService from '~/features/Household/HouseholdService.server';
 import type { Household } from '@prisma/client';
 import type { LoaderFunction } from '@remix-run/node';
 import type { FC } from 'react';
-import NewHouseholdModal from '~/components/NewHouseholdModal';
+import NewHouseholdModal from '~/features/Household/NewHouseholdModal';
 
 interface LoaderData {
   households: Household[];

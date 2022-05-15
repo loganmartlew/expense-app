@@ -5,7 +5,7 @@ import { sessionStorage } from '~/services/session.server';
 import { Container } from '@mantine/core';
 import { validateUserDto } from '~/validation/user';
 import UserService from '~/services/UserService.server';
-import SignUpForm from '~/components/SignUpForm';
+import SignUpForm from '~/features/Auth/SignUpForm';
 import type { FC } from 'react';
 import type { ActionFunction, LoaderFunction } from '@remix-run/node';
 import type UserDTO from '~/types/UserDTO';

@@ -1,6 +1,6 @@
 import { json, redirect } from '@remix-run/node';
 import authenticator from '~/services/auth.server';
-import HouseholdService from '~/services/HouseholdService.server';
+import HouseholdService from '~/features/Household/HouseholdService.server';
 import { validateHouseholdDto } from '~/validation/household';
 import type { ActionFunction } from '@remix-run/node';
 import type HouseholdDTO from '~/types/HouseholdDTO';

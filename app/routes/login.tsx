@@ -3,7 +3,7 @@ import { useLoaderData } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
 import { sessionStorage } from '~/services/session.server';
 import { Container } from '@mantine/core';
-import LoginForm from '~/components/LoginForm';
+import LoginForm from '~/features/Auth/LoginForm';
 import type { FC } from 'react';
 import type { ActionFunction, LoaderFunction } from '@remix-run/node';
 import type FormError from '~/types/FormError';
