@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
   try {
     const validHouseholdDto = await validateHouseholdDto(householdDto);
     await HouseholdService.addHousehold(validHouseholdDto);
-    return redirect('/dashboard');
+    return redirect('/app');
   } catch (err: any) {
     if (err.errors) {
       return json({ error: { message: err.errors[0] } });

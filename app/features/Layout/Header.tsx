@@ -2,7 +2,7 @@ import {
   Burger,
   Header,
   MediaQuery,
-  Text,
+  Title,
   useMantineTheme,
 } from '@mantine/core';
 import type { FC } from 'react';
@@ -27,7 +27,7 @@ const AppHeader: FC<Props> = ({ open, toggleOpen }) => {
             mr='xl'
           />
         </MediaQuery>
-        <Text>Application header</Text>
+        <Title>Expense Tracker</Title>
       </div>
     </Header>
   );

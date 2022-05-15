@@ -15,9 +15,7 @@ interface LoaderData {
 }
 
 export let loader: LoaderFunction = async ({ request }) => {
-  const user = await authenticator.isAuthenticated(request, {
-    failureRedirect: '/login',
-  });
+  const user = await authenticator.isAuthenticated(request);
 
   if (!user) return user;
   if (user instanceof Error) return user;
