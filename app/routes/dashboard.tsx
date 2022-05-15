@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { json } from '@remix-run/node';
 import { Link, useLoaderData } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
@@ -7,6 +8,7 @@ import HouseholdService from '~/services/HouseholdService.server';
 import type { Household } from '@prisma/client';
 import type { LoaderFunction } from '@remix-run/node';
 import type { FC } from 'react';
+import NewHouseholdModal from '~/components/NewHouseholdModal';
 
 interface LoaderData {
   households: Household[];
@@ -29,14 +31,23 @@ interface Props {}
 
 const DashboardPage: FC<Props> = () => {
   const { households } = useLoaderData<LoaderData>();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   return (
     <Container>
       <Group>
         <Title>Households</Title>
-        <Link to='/new-household'>
-          <Button leftIcon={<Plus size={18} />}>New Household</Button>
-        </Link>
+        <Button
+          size='xs'
+          leftIcon={<Plus size={18} />}
+          onClick={() => setModalOpen(true)}
+        >
+          New Household
+        </Button>
+        <NewHouseholdModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+        />
         <Link to='/logout'>
           <Button leftIcon={<Plus size={18} />}>logout</Button>
         </Link>
