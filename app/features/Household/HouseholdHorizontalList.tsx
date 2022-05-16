@@ -1,15 +1,15 @@
-import { Box, Group, ScrollArea } from '@mantine/core';
-import type { Household } from '@prisma/client';
-import type { FC } from 'react';
+import { Group, ScrollArea } from '@mantine/core';
 import HouseholdCard from './HouseholdCard';
+import type { FC } from 'react';
+import type { HouseholdCardData } from '~/types/Household';
 
 interface Props {
-  households: Household[];
+  households: HouseholdCardData[];
 }
 
 const HouseholdHorizontalList: FC<Props> = ({ households }) => {
   return (
-    <ScrollArea sx={{ width: '100%' }}>
+    <ScrollArea sx={{ width: '100%', paddingBottom: '1em' }}>
       <Group noWrap>
         {households.map(household => (
           <HouseholdCard key={household.id} household={household} />

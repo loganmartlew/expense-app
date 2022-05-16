@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { json } from '@remix-run/node';
-import { Link, useLoaderData } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
 import { Container, Group, Title, Button } from '@mantine/core';
 import { Plus } from 'tabler-icons-react';
 import HouseholdService from '~/features/Household/HouseholdService.server';
-import type { Household } from '@prisma/client';
+import HouseholdHorizontalList from '~/features/Household/HouseholdHorizontalList';
+import NewHouseholdModal from '~/features/Household/NewHouseholdModal';
 import type { LoaderFunction } from '@remix-run/node';
 import type { FC } from 'react';
-import NewHouseholdModal from '~/features/Household/NewHouseholdModal';
-import HouseholdHorizontalList from '~/features/Household/HouseholdHorizontalList';
+import type { HouseholdCardData } from '~/types/Household';
 
 interface LoaderData {
-  households: Household[];
+  households: HouseholdCardData[];
 }
 
 export let loader: LoaderFunction = async ({ request }) => {
@@ -21,7 +21,7 @@ export let loader: LoaderFunction = async ({ request }) => {
   if (!user) return user;
   if (user instanceof Error) return user;
 
-  const households = await HouseholdService.getHouseholdsOfUser(user.id);
+  const households = await HouseholdService.getHouseholdCardData(user.id);
   const data: LoaderData = { households };
   return json(data);
 };
@@ -47,9 +47,6 @@ const DashboardPage: FC<Props> = () => {
           open={modalOpen}
           onClose={() => setModalOpen(false)}
         />
-        <Link to='/logout'>
-          <Button leftIcon={<Plus size={18} />}>logout</Button>
-        </Link>
       </Group>
       {households.length < 1 ? (
         <p>No Households</p>
