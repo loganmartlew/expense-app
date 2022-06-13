@@ -1,3 +1,4 @@
+import { Link } from '@remix-run/react';
 import {
   Card,
   Title,
@@ -5,10 +6,11 @@ import {
   Text,
   Stack,
   RingProgress,
-  Tooltip,
-  Box,
+  Center,
+  Button,
 } from '@mantine/core';
 import { User } from 'tabler-icons-react';
+import OwnerIcon from '~/components/OwnerIcon';
 import type { FC } from 'react';
 import type { HouseholdCardData } from '~/types/Household';
 
@@ -23,30 +25,41 @@ const HouseholdCard: FC<Props> = ({ household }) => {
       : 0;
 
   return (
-    <Card sx={{ minWidth: 'max-content', flex: '1 1 0px' }}>
+    <Card sx={{ flex: '1 1 0px', width: 'max-content', minWidth: '28ch' }}>
       <Stack>
-        <Title order={3}>{household.name}</Title>
-        <Group>
-          <Stack>
-            <Text>{household.owner.fname + ' ' + household.owner.lname}</Text>
-            <Group>
-              <User />
-              <Text>{household.userCount}</Text>
-            </Group>
-          </Stack>
-          <Box>
-            <Text>Total Budget Used:</Text>
-            <RingProgress
-              label={<Text align='center'>{`${ringValue}%`}</Text>}
-              sections={[
-                {
-                  value: ringValue,
-                  color: 'cyan',
-                },
-              ]}
-            />
-          </Box>
+        <Link to={`/households/${household.id}`}>
+          <Title order={3}>{household.name}</Title>
+        </Link>
+        <Group align='center' spacing={0}>
+          <User size={18} />
+          <Text sx={{ lineHeight: '1rem' }}>
+            {household.userCount === 1
+              ? `${household.userCount} user`
+              : `${household.userCount} users`}
+          </Text>
         </Group>
+        <Group spacing={5}>
+          <OwnerIcon />
+          <Text>{household.owner.fname + ' ' + household.owner.lname}</Text>
+        </Group>
+        <Center>
+          <RingProgress
+            label={<Text align='center'>{`${ringValue}%`}</Text>}
+            sections={[
+              {
+                value: ringValue,
+                color: 'cyan',
+              },
+            ]}
+          />
+        </Center>
+        <Button
+          component={Link}
+          to={`/households/${household.id}`}
+          variant='light'
+        >
+          View Household
+        </Button>
       </Stack>
     </Card>
   );
