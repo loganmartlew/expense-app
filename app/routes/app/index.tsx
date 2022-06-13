@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
-import { Container, Group, Title, Button } from '@mantine/core';
+import { Container, Group, Title, Button, Stack } from '@mantine/core';
 import { Plus } from 'tabler-icons-react';
 import HouseholdService from '~/features/Household/HouseholdService.server';
 import HouseholdHorizontalList from '~/features/Household/HouseholdHorizontalList';
@@ -34,25 +34,27 @@ const DashboardPage: FC<Props> = () => {
 
   return (
     <Container>
-      <Group>
-        <Title>Households</Title>
-        <Button
-          size='xs'
-          leftIcon={<Plus size={18} />}
-          onClick={() => setModalOpen(true)}
-        >
-          New Household
-        </Button>
-        <NewHouseholdModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-        />
-      </Group>
-      {households.length < 1 ? (
-        <p>No Households</p>
-      ) : (
-        <HouseholdHorizontalList households={households} />
-      )}
+      <Stack>
+        <Group>
+          <Title>Households</Title>
+          <Button
+            size='xs'
+            leftIcon={<Plus size={18} />}
+            onClick={() => setModalOpen(true)}
+          >
+            New Household
+          </Button>
+          <NewHouseholdModal
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+          />
+        </Group>
+        {households.length < 1 ? (
+          <p>No Households</p>
+        ) : (
+          <HouseholdHorizontalList households={households} />
+        )}
+      </Stack>
     </Container>
   );
 };
