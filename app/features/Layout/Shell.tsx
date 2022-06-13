@@ -16,7 +16,7 @@ const Shell: FC<Props> = ({ children }) => {
       fixed
       sx={{
         main: {
-          paddingRight: 0,
+          paddingRight: 16,
           background:
             theme.colorScheme === 'dark'
               ? theme.colors.dark[8]

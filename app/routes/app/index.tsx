@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import authenticator from '~/services/auth.server';
-import { Container, Group, Title, Button, Stack } from '@mantine/core';
+import { Group, Title, Button, Stack } from '@mantine/core';
 import { Plus } from 'tabler-icons-react';
+import AppContainer from '~/components/AppContainer';
 import HouseholdService from '~/features/Household/HouseholdService.server';
 import HouseholdHorizontalList from '~/features/Household/HouseholdHorizontalList';
 import NewHouseholdModal from '~/features/Household/NewHouseholdModal';
@@ -33,7 +34,7 @@ const DashboardPage: FC<Props> = () => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   return (
-    <Container>
+    <AppContainer>
       <Stack>
         <Group>
           <Title>Households</Title>
@@ -55,7 +56,7 @@ const DashboardPage: FC<Props> = () => {
           <HouseholdHorizontalList households={households} />
         )}
       </Stack>
-    </Container>
+    </AppContainer>
   );
 };
 
