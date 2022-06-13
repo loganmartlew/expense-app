@@ -19,6 +19,8 @@ interface Props {
 }
 
 const HouseholdCard: FC<Props> = ({ household }) => {
+  const householdLink = `/app/household/${household.id}`;
+
   const ringValue =
     household.totalBudget.amount > 0
       ? household.totalBudget.used / household.totalBudget.amount
@@ -27,7 +29,7 @@ const HouseholdCard: FC<Props> = ({ household }) => {
   return (
     <Card sx={{ flex: '1 1 0px', width: 'max-content', minWidth: '28ch' }}>
       <Stack>
-        <Link to={`/households/${household.id}`}>
+        <Link to={householdLink}>
           <Title order={3}>{household.name}</Title>
         </Link>
         <Group align='center' spacing={0}>
@@ -40,7 +42,7 @@ const HouseholdCard: FC<Props> = ({ household }) => {
         </Group>
         <Group spacing={5}>
           <OwnerIcon />
-          <Text>{household.owner.fname + ' ' + household.owner.lname}</Text>
+          <Text>{`${household.owner.fname} ${household.owner.lname}`}</Text>
         </Group>
         <Center>
           <RingProgress
@@ -53,9 +55,9 @@ const HouseholdCard: FC<Props> = ({ household }) => {
             ]}
           />
         </Center>
-        <Button
+        <Button<typeof Link>
           component={Link}
-          to={`/households/${household.id}`}
+          to={householdLink}
           variant='light'
         >
           View Household

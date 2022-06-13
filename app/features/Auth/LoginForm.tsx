@@ -43,7 +43,7 @@ const LoginForm: FC<Props> = ({ loaderData }) => {
         </Button>
         <Text align='center'>
           Don't have an account?{' '}
-          <Anchor component={Link} to='/signup'>
+          <Anchor<typeof Link> component={Link} to='/signup'>
             Sign Up.
           </Anchor>
         </Text>
