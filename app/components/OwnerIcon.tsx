@@ -9,7 +9,11 @@ const OwnerIcon: FC<Props> = () => {
   console.log(theme);
 
   return (
-    <Tooltip label='Household Owner' openDelay={1000}>
+    <Tooltip
+      label='Household Owner'
+      openDelay={1000}
+      sx={{ display: 'flex', height: 'max-content' }}
+    >
       <Crown color={theme.colors.yellow[5]} />
     </Tooltip>
   );

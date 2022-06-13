@@ -10,6 +10,7 @@ import type { LoaderFunction } from '@remix-run/node';
 import type { FC } from 'react';
 import type { HouseholdFull } from '~/types/Household';
 import type { Activity } from '~/types/Activity';
+import OwnerIcon from '~/components/OwnerIcon';
 
 interface LoaderData {
   household: HouseholdFull;
@@ -63,19 +64,25 @@ const HouseholdPage: FC<Props> = () => {
   const { household } = useLoaderData<LoaderData>();
   return (
     <Stack>
-      <Group>
+      <Stack spacing={0}>
         <Title order={2} sx={{ fontSize: '3rem' }}>
           {household.name}
         </Title>
-        {/* <Group align='center' spacing={0}>
-          <User size={18} />
-          <Text sx={{ lineHeight: '1rem' }}>
-            {household.users.length === 1
-              ? `${household.users.length} user`
-              : `${household.users.length} users`}
-          </Text>
-        </Group> */}
-      </Group>
+        <Group>
+          <Group spacing={5} align='center'>
+            <OwnerIcon />
+            <Text>{`${household.owner.fname} ${household.owner.lname}`}</Text>
+          </Group>
+          <Group align='center' spacing={0}>
+            <User />
+            <Text>
+              {household.users.length === 1
+                ? `${household.users.length} user`
+                : `${household.users.length} users`}
+            </Text>
+          </Group>
+        </Group>
+      </Stack>
       <Card>
         <Group mb='1em'>
           <ActivityIcon />
