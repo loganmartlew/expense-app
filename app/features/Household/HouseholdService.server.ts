@@ -2,7 +2,10 @@ import { db } from '~/utils/db.server';
 import { validateHouseholdDto } from '~/validation/household';
 import type HouseholdDTO from '~/types/HouseholdDTO';
 import type { Household } from '@prisma/client';
-import type { HouseholdUsersOwner } from '~/types/Household';
+import type {
+  HouseholdWithUsersAndOwner,
+  HouseholdFull,
+} from '~/types/Household';
 
 export default class HouseholdService {
   static async addHousehold(householdData: HouseholdDTO): Promise<Household> {
@@ -22,9 +25,22 @@ export default class HouseholdService {
     return household;
   }
 
-  static async getHousehold(householdId: string): Promise<Household | null> {
+  static async getHousehold(
+    householdId: string
+  ): Promise<HouseholdFull | null> {
     const household = await db.household.findUnique({
       where: { id: householdId },
+      include: {
+        users: true,
+        owner: true,
+        budgets: {
+          include: {
+            expenses: true,
+          },
+        },
+        recurringExpenses: true,
+        incomes: true,
+      },
     });
 
     return household;
@@ -32,7 +48,7 @@ export default class HouseholdService {
 
   static async getHouseholdsOfUser(
     userId: string
-  ): Promise<HouseholdUsersOwner[]> {
+  ): Promise<HouseholdWithUsersAndOwner[]> {
     const households = (await db.household.findMany({
       include: {
         users: {
@@ -61,7 +77,7 @@ export default class HouseholdService {
           },
         },
       },
-    })) as HouseholdUsersOwner[];
+    })) as HouseholdWithUsersAndOwner[];
 
     return households;
   }
